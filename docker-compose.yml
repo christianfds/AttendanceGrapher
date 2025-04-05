@@ -12,10 +12,12 @@ services:
       - traefik.http.routers.attendance.entrypoints=websecure
       - traefik.http.routers.attendance.rule=Host(`attendance.christianfds.dev`)
       - traefik.http.routers.attendance.tls.certresolver=letsencryptresolver
-      - traefik.http.services.attendance.loadbalancer.server.port=6000
-      # - traefik.http.routers.attendance.middlewares=attendance-auth
-      # - traefik.http.middlewares.attendance-auth.basicauth.usersfile=/users/users.u
+      - traefik.http.services.static-files.loadbalancer.server.port=6000
     ports:
-      - target: 6000
-        published: 6000
-        mode: host
+      - 6000:6000
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
