@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  static-files:
+    build:
+      context: ./static/
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.attendance.entrypoints=websecure
+      - traefik.http.routers.attendance.rule=Host(`attendance.christianfds.dev`)
+      - traefik.http.routers.attendance.tls.certresolver=letsencryptresolver
+      - traefik.http.services.attendance.loadbalancer.server.port=6000
+      # - traefik.http.routers.attendance.middlewares=attendance-auth
+      # - traefik.http.middlewares.attendance-auth.basicauth.usersfile=/users/users.u
+    ports:
+      - target: 6000
+        published: 6000
+        mode: host
